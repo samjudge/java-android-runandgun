@@ -1,6 +1,7 @@
 package sam.runandgun.weapons;
 
-import sam.runandgun.player.Player;
+import java.util.List;
+
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 
@@ -14,7 +15,7 @@ public abstract class Weapon {
 		this.res = res;
 	}
 	
-	public abstract Bullet[] shoot(int originx, int originy, double originRotationDegrees);
+	public abstract List<Bullet> shoot(int originx, int originy, double originRotationDegrees);
 	
 
 	protected Bitmap getBulletImage() {

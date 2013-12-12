@@ -5,9 +5,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Button;
-import android.widget.GridLayout;
+import android.widget.RelativeLayout;
 
-public class Controls extends GridLayout{
+public class Controls extends RelativeLayout{
 	
 	private Button left;
 	private Button right;

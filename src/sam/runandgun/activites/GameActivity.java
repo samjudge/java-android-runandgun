@@ -3,6 +3,7 @@ package sam.runandgun.activites;
 import sam.runandgun.gen.R;
 import sam.runandgun.views.Controls;
 import sam.runandgun.views.GameBoard;
+import sam.runandgun.weapons.Bullet;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,8 +47,8 @@ public class GameActivity extends Activity {
 		
 		controls = (Controls)this.findViewById(R.id.controls);
 		
-		controls.getLeftButton().setOnTouchListener(new LeftButtonListener());
-		controls.getRightButton().setOnTouchListener(new RightButtonListener());
+		controls.getLeftButton().setOnTouchListener(new MoveButtonListener());
+		controls.getRightButton().setOnTouchListener(new MoveButtonListener());
 		controls.getFireButton().setOnTouchListener(new FireButtonListener());
 		
 		frame.postDelayed(controlThread, 1000); //fire up the control thread
@@ -66,6 +67,7 @@ public class GameActivity extends Activity {
 		}
 		synchronized public void run(){
 			//frame.removeCallbacks(frameRunnable);
+			gameBoard.updateBoard();
 			gameBoard.invalidate();
 			frame.postDelayed(frameRunnable, FPS);
 		}
@@ -86,36 +88,26 @@ public class GameActivity extends Activity {
 				gameBoard.movePlayerRight();
 			}
 				
-			frame.postDelayed(this, FPS/2);
+			frame.postDelayed(this, FPS);
 		}
 		
 	}
 	
 	//nested even listeners
 	
-	private class LeftButtonListener implements View.OnTouchListener{
+	private class MoveButtonListener implements View.OnTouchListener{
 		public boolean onTouch(View v, MotionEvent event) {
 			switch(event.getAction()){
 				case MotionEvent.ACTION_DOWN:
+					//gameBoard.movePlayerRight();
 					v.setPressed(true);
 					break;
 				case MotionEvent.ACTION_UP:
 					v.setPressed(false);
-					return true;
-			}
-			return false;
-		}
-	}
-	
-	private class RightButtonListener implements View.OnTouchListener{
-		public boolean onTouch(View v, MotionEvent event) {
-			switch(event.getAction()){
-				case MotionEvent.ACTION_DOWN:
-					v.setPressed(true);
 					break;
-				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_CANCEL:
 					v.setPressed(false);
-					return true;
+					break;
 			}
 			return false;
 		}
@@ -123,7 +115,11 @@ public class GameActivity extends Activity {
 	
 	private class FireButtonListener implements View.OnTouchListener{
 		public boolean onTouch(View v, MotionEvent event) {
-			gameBoard.getPlayer().fireWeapon();
+			switch(event.getAction()){
+				case MotionEvent.ACTION_DOWN:
+					gameBoard.getBullets().addAll(gameBoard.getPlayer().fireWeapon());
+					return false;
+				}
 			return false;
 		}
 	}
