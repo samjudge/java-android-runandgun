@@ -1,6 +1,7 @@
 package sam.runandgun.views;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import sam.runandgun.enemies.Enemy;
@@ -8,7 +9,6 @@ import sam.runandgun.gen.R;
 import sam.runandgun.player.Player;
 import sam.runandgun.weapons.Bullet;
 import sam.runandgun.weapons.MachineGun;
-import sam.runandgun.weapons.Weapon;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -43,47 +43,96 @@ public class GameBoard extends View{
 	//logic
 	
 	public void updateBoard(){
-		
-		//temp code
-		
-		if((int)(Math.random()*1000) < 15){ //replace it?
-			this.getEnemies().add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemy), new MachineGun(this.getResources()), (int)(Math.random()*350),-45));
-		} //definately replace
-		
-		for(Enemy e : enemies){ //this to
-			if((int)(Math.random()*1000) < 10){
-				bullets.addAll(e.fireWeapon());
-			}
-		} //replace this too
-		
-		//end temp - put in own function later
-		
+		this.generateEnemies();
 		this.moveEnemies();
 		this.moveBullets();
+		detectCollision();
 	}
 	
-	public void moveBullets(){
-		for(Bullet b: bullets){
+	private void moveBullets(){
+		Iterator<Bullet> bulIterator = bullets.iterator();
+		while(bulIterator.hasNext()){
+			Bullet b = bulIterator.next();
 			b.move();
-			Log.e("Point:", b.getPos().x + "/" + b.getPos().y);
+			if(b.getPos().y > 700){
+				bulIterator.remove();
+			}
+			if(b.getPos().y < 25){
+				bulIterator.remove();
+			}
 		}
 	}
 	
 	public void movePlayerLeft(){
-		player.movePlayer(-4);
-	}
-	
-	public void movePlayerRight(){
-		player.movePlayer(4);
-	}
-	
-	public void moveEnemies(){
-		for(Enemy e: enemies){
-			e.move(0);
+		if(!(player.getPos().x < -25)){
+			player.movePlayer(-4);
 		}
 	}
 	
-
+	public void movePlayerRight(){
+		if(!(player.getPos().x > 375)){
+			player.movePlayer(4);
+		}
+	}
+	
+	private void moveEnemies(){
+		Iterator<Enemy> eIterator = enemies.iterator();
+		while(eIterator.hasNext()){
+			Enemy e = eIterator.next();
+			e.move(0);
+			if (e.getPos().y > 700){
+				eIterator.remove();
+			}
+		}
+	}
+	
+	private void generateEnemies(){
+		if((int)(Math.random()*1000) < 15){
+			this.getEnemies().add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemy), new MachineGun(this.getResources()), (int)(Math.random()*350),-45));
+		}
+		
+		for(Enemy e : enemies){ //this generates random shots
+			if((int)(Math.random()*1000) < 10){ //this logic should be migrated into the fireWeapon() method in Enemy
+				bullets.addAll(e.fireWeapon());
+			}
+		}
+	}
+	
+	private void detectCollision(){
+		Iterator<Bullet> bulIterator = bullets.iterator();
+		while(bulIterator.hasNext()){
+			Bullet b = bulIterator.next();
+			if (b.isFriendly() == false){
+				//Log.e("It", "Belongs to them");
+				if( b.getPos().x+25 > this.player.getPos().x && b.getPos().x+25 < this.player.getPos().x+50){
+					if (b.getPos().y+25 > this.player.getPos().y && b.getPos().y+25 < this.player.getPos().y+50){
+						//Log.e("It", "Hits You");
+						bulIterator.remove();
+					}
+				}
+			}
+		}
+		//
+		bulIterator = bullets.iterator();
+		while(bulIterator.hasNext()){
+			Bullet b = bulIterator.next();
+			//Log.e("isFriendly?", ""+b.isFriendly());
+			if(b.isFriendly() == true){
+				Iterator<Enemy> enemyIterator = enemies.iterator(); //fuuuck took so long realize i had to move this
+				while (enemyIterator.hasNext()) {
+					Enemy e = enemyIterator.next();
+					if(b.getPos().x+25 > e.getPos().x && b.getPos().x+25 < e.getPos().x+50){
+						if (b.getPos().y+25 > e.getPos().y && b.getPos().y+25 < e.getPos().y+50){
+								bulIterator.remove();
+								enemyIterator.remove();
+								break;
+						}
+					}
+				}
+			}
+		}
+		
+	}
 	
 	//getters, setters
 	

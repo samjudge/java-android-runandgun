@@ -15,7 +15,7 @@ public abstract class Weapon {
 		this.res = res;
 	}
 	
-	public abstract List<Bullet> shoot(int originx, int originy, double originRotationDegrees);
+	public abstract List<Bullet> shoot(int originx, int originy, double originRotationDegrees, boolean friendly);
 	
 
 	protected Bitmap getBulletImage() {
@@ -40,6 +40,14 @@ public abstract class Weapon {
 	
 	protected void setShotDirection(double shotDirection){
 		this.shotDirection = shotDirection;
+	}
+
+	protected Resources getRes() {
+		return res;
+	}
+
+	protected void setRes(Resources res) {
+		this.res = res;
 	}
 
 }

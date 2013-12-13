@@ -4,19 +4,23 @@ import sam.runandgun.canvasDrawable.canvasDrawable;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.util.Log;
 
 public class Bullet implements canvasDrawable{
 	
 	private double shotDirection;
 	private double shotSpeed;
-
-
 	private Point pos;
 	private Bitmap bulletImage;
 	private boolean isFriendly;
 	
+	//debug
+	
+	public int id;
+	
+	//enddebug
+	
 	public Bullet(double shotSpeed, double shotDirection, int x, int y, Bitmap bImage, boolean isFriendly){
+		this.isFriendly = isFriendly;
 		this.shotSpeed = shotSpeed;
 		this.shotDirection = checkDirection(shotDirection);
 		this.pos = new Point();

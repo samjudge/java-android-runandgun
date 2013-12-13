@@ -13,8 +13,15 @@ public class MachineGun extends Weapon {
 		this.setBulletImage(BitmapFactory.decodeResource(res, R.drawable.shot));
 	}
 
-	public List<Bullet> shoot(int originx, int originy, double originRotationDegrees) {
-		Bullet bullet = new Bullet(3, originRotationDegrees, originx, originy, this.getBulletImage(), true); //NOTE: Setting friendly here because it's easy. plz change later
+	public List<Bullet> shoot(int originx, int originy, double originRotationDegrees, boolean friendly) {
+		Bullet bullet = new Bullet(3, originRotationDegrees, originx, originy, this.getBulletImage(), friendly); //NOTE: Setting friendly here because it's easy. plz change later
+		
+		//debug
+		
+		bullet.id = (int)(Math.random()*20000);
+		
+		//end debug
+		
 		List<Bullet> bullets = new ArrayList<Bullet>();
 		bullets.add(bullet);
 		return bullets;

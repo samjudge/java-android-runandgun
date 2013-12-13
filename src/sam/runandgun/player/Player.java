@@ -26,7 +26,7 @@ public class Player implements canvasDrawable{
 	}
 	
 	public List<Bullet> fireWeapon(){
-		return this.weapon.shoot(pos.x, pos.y, 0);// origin rotation is 0, since it is unimplemented in player
+		return this.weapon.shoot(pos.x, pos.y, 0, true);// origin rotation is 0, since it is unimplemented in player
 	}
 	
 	public void drawToCanvas(Canvas c){

@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 
-public class Enemy {
+public class Enemy { //I may want to superclass some stuff in this and player...
 	private Point pos;
 	private Bitmap enemyIcon;
 	private Weapon weapon; 
@@ -22,7 +22,7 @@ public class Enemy {
 	}
 	
 	public List<Bullet> fireWeapon(){
-		return this.weapon.shoot(pos.x, pos.y, 180);// origin rotation is 180, since shooting downwards
+		return this.weapon.shoot(pos.x, pos.y, 180, false);// origin rotation is 180, since shooting downwards
 	}
 	
 	public void drawToCanvas(Canvas c){

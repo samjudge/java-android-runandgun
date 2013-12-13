@@ -3,7 +3,6 @@ package sam.runandgun.activites;
 import sam.runandgun.gen.R;
 import sam.runandgun.views.Controls;
 import sam.runandgun.views.GameBoard;
-import sam.runandgun.weapons.Bullet;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
