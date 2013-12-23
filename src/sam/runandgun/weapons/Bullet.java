@@ -12,7 +12,7 @@ public class Bullet implements canvasDrawable{
 	private Point pos;
 	private Bitmap bulletImage;
 	private boolean isFriendly;
-	
+	private int dmg;
 	//debug
 	
 	public int id;
@@ -20,6 +20,7 @@ public class Bullet implements canvasDrawable{
 	//enddebug
 	
 	public Bullet(double shotSpeed, double shotDirection, int x, int y, Bitmap bImage, boolean isFriendly){
+		this.dmg = 20; //default
 		this.isFriendly = isFriendly;
 		this.shotSpeed = shotSpeed;
 		this.shotDirection = checkDirection(shotDirection);
@@ -59,6 +60,10 @@ public class Bullet implements canvasDrawable{
 	
 	public Point getPos() {
 		return pos;
+	}
+
+	public int getDmg() {
+		return dmg;
 	}
 	
 }

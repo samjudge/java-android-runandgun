@@ -12,9 +12,11 @@ public class Enemy { //I may want to superclass some stuff in this and player...
 	private Point pos;
 	private Bitmap enemyIcon;
 	private Weapon weapon; 
+	private int destructionScoreValue;
 	private boolean canDraw;
 	
 	public Enemy(Bitmap enemyIcon, Weapon w, int x, int y){
+		destructionScoreValue = 25; //default
 		pos = new Point(x,y);
 		this.weapon = w;
 		this.enemyIcon = enemyIcon;
@@ -62,6 +64,10 @@ public class Enemy { //I may want to superclass some stuff in this and player...
 
 	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
+	}
+
+	public int getDestructionScoreValue() {
+		return destructionScoreValue;
 	}
 
 }

@@ -1,13 +1,19 @@
 package sam.runandgun.activites;
 
+import java.util.Collection;
+
 import sam.runandgun.gen.R;
+import sam.runandgun.player.Player;
 import sam.runandgun.views.Controls;
 import sam.runandgun.views.GameBoard;
+import sam.runandgun.weapons.Bullet;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class GameActivity extends Activity {
 	
@@ -21,7 +27,7 @@ public class GameActivity extends Activity {
 	
 
 	
-	private FrameUpdate frameRunnable = new FrameUpdate();
+	private FrameUpdate frameRunnable;
 	
 	private ControlThread controlThread = new ControlThread();
 	
@@ -31,6 +37,8 @@ public class GameActivity extends Activity {
 	
 	private GameBoard gameBoard;
 	private Controls controls;
+	private ProgressBar healthBar;
+	private TextView score;
 	
 	//End of Views
 	
@@ -41,15 +49,17 @@ public class GameActivity extends Activity {
 		setContentView(R.layout.activity_game);
 		
 		gameBoard = (GameBoard)this.findViewById(R.id.board);
-		
-		frame.postDelayed(frameRunnable.initiateGraphics(), 1000); //start graphics thread
-		
 		controls = (Controls)this.findViewById(R.id.controls);
+		
+		healthBar = controls.getHealth();
+		score = controls.getScore();
 		
 		controls.getLeftButton().setOnTouchListener(new MoveButtonListener());
 		controls.getRightButton().setOnTouchListener(new MoveButtonListener());
 		controls.getFireButton().setOnTouchListener(new FireButtonListener());
 		
+		frameRunnable = new FrameUpdate(gameBoard);
+		frame.postDelayed(frameRunnable.initiateGraphics(), 1000); //start graphics thread
 		frame.postDelayed(controlThread, 1000); //fire up the control thread
 		
 	}
@@ -60,14 +70,29 @@ public class GameActivity extends Activity {
 	
 	//threads
 	
-	private class FrameUpdate implements Runnable{ //update the graphics
-		public FrameUpdate(){
-			
+	private class FrameUpdate implements Runnable{ //gameLoop
+		
+		private GameBoard board;
+		
+		public FrameUpdate(GameBoard b){
+			board = b;
+			healthBar.setMax(board.getPlayer().getHealth());
+			healthBar.setProgress(gameBoard.getPlayer().getHealth());
+			score.setText(""+board.getPlayer().getScore());
 		}
 		synchronized public void run(){
 			//frame.removeCallbacks(frameRunnable);
-			gameBoard.updateBoard();
-			gameBoard.invalidate();
+			
+			//update UI
+			healthBar.setProgress(gameBoard.getPlayer().getHealth());
+			score.setText(""+gameBoard.getPlayer().getScore());
+			
+			//update game
+			board.getPlayer().isDead();
+			board.updateBoard();
+			board.invalidate();
+			
+			//continue thread
 			frame.postDelayed(frameRunnable, FPS);
 		}
 		synchronized public FrameUpdate initiateGraphics(){
@@ -98,7 +123,6 @@ public class GameActivity extends Activity {
 		public boolean onTouch(View v, MotionEvent event) {
 			switch(event.getAction()){
 				case MotionEvent.ACTION_DOWN:
-					//gameBoard.movePlayerRight();
 					v.setPressed(true);
 					break;
 				case MotionEvent.ACTION_UP:
@@ -116,7 +140,10 @@ public class GameActivity extends Activity {
 		public boolean onTouch(View v, MotionEvent event) {
 			switch(event.getAction()){
 				case MotionEvent.ACTION_DOWN:
-					gameBoard.getBullets().addAll(gameBoard.getPlayer().fireWeapon());
+					Collection<Bullet> bullets = gameBoard.getPlayer().fireWeapon();
+					if (bullets != null){
+						gameBoard.getBullets().addAll(bullets);
+					}
 					return false;
 				}
 			return false;

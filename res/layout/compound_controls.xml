@@ -10,7 +10,8 @@
         android:id="@+id/left"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:text="&lt;" />
+        android:text="&lt;"
+        />
 
     <Button
         android:id="@+id/fire"
@@ -18,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="*" />
+        android:text="*"
+        />
 
     <Button
         android:id="@+id/right"
@@ -26,6 +28,38 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text=">" />
+        android:text=">"
+        />
+
+    <ProgressBar
+        android:id="@+id/healthBar"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/left"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        />
+
+    <TextView
+        android:id="@+id/scoreLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/healthBar"
+        android:layout_below="@+id/healthBar"
+        android:textColor="#FFFFFF"
+        android:text="Score: " />
+
+    <TextView
+        android:id="@+id/scoreNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/scoreLabel"
+        android:layout_alignBottom="@+id/scoreLabel"
+        android:layout_toRightOf="@+id/scoreLabel"
+        android:layout_marginLeft="15dp"
+        android:textColor="#FFFFFF"
+        android:text="0" />
 
 </RelativeLayout>

@@ -5,13 +5,17 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class Controls extends RelativeLayout{
 	
 	private Button left;
 	private Button right;
 	private Button fire;
+	private TextView score;
+	private ProgressBar health;
 	
 	public Controls(Context context, AttributeSet aS) {
 		super(context,aS);
@@ -20,6 +24,8 @@ public class Controls extends RelativeLayout{
 		
 		inflater.inflate(R.layout.compound_controls, this, true);
 		
+		score = (TextView)this.findViewById(R.id.scoreNumber);
+		health = (ProgressBar)this.findViewById(R.id.healthBar);
 		left = (Button)this.findViewById(R.id.left);
 		right = (Button)this.findViewById(R.id.right);
 		fire = (Button)this.findViewById(R.id.fire);
@@ -36,5 +42,14 @@ public class Controls extends RelativeLayout{
 	public Button getFireButton() {
 		return fire;
 	}
+
+	public TextView getScore() {
+		return score;
+	}
+
+	public ProgressBar getHealth() {
+		return health;
+	}
+
 
 }

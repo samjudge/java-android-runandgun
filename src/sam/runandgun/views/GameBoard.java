@@ -13,7 +13,6 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class GameBoard extends View{
@@ -100,32 +99,33 @@ public class GameBoard extends View{
 	
 	private void detectCollision(){
 		Iterator<Bullet> bulIterator = bullets.iterator();
+		//your bullets
 		while(bulIterator.hasNext()){
 			Bullet b = bulIterator.next();
 			if (b.isFriendly() == false){
-				//Log.e("It", "Belongs to them");
 				if( b.getPos().x+25 > this.player.getPos().x && b.getPos().x+25 < this.player.getPos().x+50){
 					if (b.getPos().y+25 > this.player.getPos().y && b.getPos().y+25 < this.player.getPos().y+50){
-						//Log.e("It", "Hits You");
+						this.player.setHealth(this.player.getHealth() - b.getDmg());
 						bulIterator.remove();
+						break;//do I need this?
 					}
 				}
 			}
 		}
-		//
+		//enemies bullets
 		bulIterator = bullets.iterator();
 		while(bulIterator.hasNext()){
 			Bullet b = bulIterator.next();
-			//Log.e("isFriendly?", ""+b.isFriendly());
 			if(b.isFriendly() == true){
-				Iterator<Enemy> enemyIterator = enemies.iterator(); //fuuuck took so long realize i had to move this
+				Iterator<Enemy> enemyIterator = enemies.iterator(); //It took so long realize i had to move this here
 				while (enemyIterator.hasNext()) {
 					Enemy e = enemyIterator.next();
 					if(b.getPos().x+25 > e.getPos().x && b.getPos().x+25 < e.getPos().x+50){
 						if (b.getPos().y+25 > e.getPos().y && b.getPos().y+25 < e.getPos().y+50){
+								this.player.setScore(player.getScore() + e.getDestructionScoreValue());
 								bulIterator.remove();
 								enemyIterator.remove();
-								break;
+								break;//again, needed?
 						}
 					}
 				}
