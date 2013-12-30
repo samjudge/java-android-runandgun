@@ -10,8 +10,10 @@ import sam.runandgun.player.Player;
 import sam.runandgun.weapons.Bullet;
 import sam.runandgun.weapons.MachineGun;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -20,9 +22,35 @@ public class GameBoard extends View{
 	Player player;
 	List<Bullet> bullets = new ArrayList<Bullet>();
 	List<Enemy> enemies = new ArrayList<Enemy>();
+
+	//nested star class for background
+	private class Star extends Point {
+		Bitmap starImg;
+		
+		private int speed = 10;
+		
+		Star(int x, int y, int speed, Bitmap b){
+			super (x,y);
+			this.speed = speed;
+			this.starImg = b;
+		}
+		
+		public void move(){
+			this.y += this.speed;
+		}
+		
+		public void drawToCanvas(Canvas c){
+			c.drawBitmap(starImg, this.x, this.y, null);
+		}
+	}
+	//maybe move ^^ it out later
+	
+	List<Star> stars = new ArrayList<Star>();
+	
 	
 	public GameBoard(Context context, AttributeSet aS) {
 		super(context, aS);
+		this.setBackgroundColor(0);//black
 		player = new Player(context.getResources());
 		player.setWeapon(new MachineGun(context.getResources()));
 	}
@@ -30,22 +58,38 @@ public class GameBoard extends View{
 	//handlers
 	
 	synchronized public void onDraw(Canvas canvas){
-		player.drawToCanvas(canvas);	
+		for(Star s: stars){
+			s.drawToCanvas(canvas);
+		}
 		for(Bullet b: bullets){
 			b.drawToCanvas(canvas);
 		}
 		for(Enemy e: enemies){
 			e.drawToCanvas(canvas);
 		}
+		player.drawToCanvas(canvas);
 	}
 	
 	//logic
 	
 	public void updateBoard(){
+		this.generateStars();
 		this.generateEnemies();
 		this.moveEnemies();
 		this.moveBullets();
+		this.moveStars();
 		detectCollision();
+	}
+	
+	private void moveStars(){
+		Iterator<Star> starIterator = stars.iterator();
+		while (starIterator.hasNext()){
+			Star s = starIterator.next();
+			s.move();
+			if (s.y > 700){ //if off of the board
+				starIterator.remove();
+			}
+		}
 	}
 	
 	private void moveBullets(){
@@ -85,9 +129,16 @@ public class GameBoard extends View{
 		}
 	}
 	
+	
+	private void generateStars(){
+		if ((int)(Math.random()*1000) < 100){
+			stars.add(new Star((int)(Math.random()*350),-45,3+((int)((Math.random()*4)-2)),BitmapFactory.decodeResource(this.getResources(), R.drawable.star)));
+		}
+	}
+	
 	private void generateEnemies(){
 		if((int)(Math.random()*1000) < 15){
-			this.getEnemies().add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemy), new MachineGun(this.getResources()), (int)(Math.random()*350),-45));
+			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemy), new MachineGun(this.getResources()), (int)(Math.random()*350),-45));
 		}
 		
 		for(Enemy e : enemies){ //this generates random shots
