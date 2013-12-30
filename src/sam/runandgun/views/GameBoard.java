@@ -9,6 +9,7 @@ import sam.runandgun.gen.R;
 import sam.runandgun.player.Player;
 import sam.runandgun.weapons.Bullet;
 import sam.runandgun.weapons.MachineGun;
+import sam.runandgun.weapons.PhaserGun;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -137,13 +138,17 @@ public class GameBoard extends View{
 	}
 	
 	private void generateEnemies(){
-		if((int)(Math.random()*1000) < 15){
-			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemy), new MachineGun(this.getResources()), (int)(Math.random()*350),-45));
+		int spawnSeed = (int)(Math.random()*1000);
+		if(spawnSeed > 995){
+			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemyphase), new PhaserGun(this.getResources()), (int)(Math.random()*350),-45, 50, 20));
+		} else if (spawnSeed > 985) {
+			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemymgun), new MachineGun(this.getResources()), (int)(Math.random()*350),-45, 25, 10));	
 		}
 		
 		for(Enemy e : enemies){ //this generates random shots
-			if((int)(Math.random()*1000) < 10){ //this logic should be migrated into the fireWeapon() method in Enemy
-				bullets.addAll(e.fireWeapon());
+			List<Bullet> shotCheck = e.fireWeapon();
+			if(shotCheck != null){
+				bullets.addAll(shotCheck);
 			}
 		}
 	}

@@ -14,17 +14,23 @@ public class Enemy { //I may want to superclass some stuff in this and player...
 	private Weapon weapon; 
 	private int destructionScoreValue;
 	private boolean canDraw;
+	private int chanceToFire;
 	
-	public Enemy(Bitmap enemyIcon, Weapon w, int x, int y){
+	public Enemy(Bitmap enemyIcon, Weapon w, int x, int y, int score, int chanceToFire){
 		destructionScoreValue = 25; //default
 		pos = new Point(x,y);
 		this.weapon = w;
 		this.enemyIcon = enemyIcon;
 		canDraw = true;
+		this.destructionScoreValue = score;
+		this.chanceToFire = chanceToFire;
 	}
 	
 	public List<Bullet> fireWeapon(){
-		return this.weapon.shoot(pos.x, pos.y, 180, false);// origin rotation is 180, since shooting downwards
+		if ((Math.random()*1000) < this.chanceToFire){
+			return this.weapon.shoot(pos.x, pos.y, 180, false);// origin rotation is 180, since shooting downwards
+		}
+		return null;
 	}
 	
 	public void drawToCanvas(Canvas c){

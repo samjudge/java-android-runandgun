@@ -5,19 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 
-public class Bullet implements canvasDrawable{
+public class Bullet implements canvasDrawable{ //Need to clean up this class
 	
 	private double shotDirection;
 	private double shotSpeed;
 	private Point pos;
+	double xPos;
+	double yPos;
 	private Bitmap bulletImage;
 	private boolean isFriendly;
 	private int dmg;
-	//debug
-	
-	public int id;
-	
-	//enddebug
 	
 	public Bullet(double shotSpeed, double shotDirection, int x, int y, Bitmap bImage, boolean isFriendly){
 		this.dmg = 20; //default
@@ -25,6 +22,8 @@ public class Bullet implements canvasDrawable{
 		this.shotSpeed = shotSpeed;
 		this.shotDirection = checkDirection(shotDirection);
 		this.pos = new Point();
+		this.xPos = x;
+		this.yPos = y;
 		this.pos.x = x;
 		this.pos.y = y;
 		this.bulletImage = bImage;
@@ -32,8 +31,11 @@ public class Bullet implements canvasDrawable{
 	
 	public void move(){
 		//the calculations below move the bullet in it's given direction, converting a degree number to rads
-		pos.x += (int)shotSpeed*(int)Math.cos(Math.toRadians(shotDirection-90));
-		pos.y += (int)shotSpeed*(int)Math.sin(Math.toRadians(shotDirection-90));
+		double dirInRads = Math.toRadians(shotDirection - 90);
+		xPos += shotSpeed*Math.cos(dirInRads);
+		yPos += shotSpeed*Math.sin(dirInRads);
+		pos.x = (int)xPos;
+		pos.y = (int)yPos;
 	}
 	
 	private double checkDirection(double direction){ //Used to make sure the degrees range between 0 and 359

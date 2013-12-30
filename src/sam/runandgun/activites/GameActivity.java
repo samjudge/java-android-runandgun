@@ -56,7 +56,7 @@ public class GameActivity extends Activity {
 		
 		controls.getLeftButton().setOnTouchListener(new MoveButtonListener());
 		controls.getRightButton().setOnTouchListener(new MoveButtonListener());
-		controls.getFireButton().setOnTouchListener(new FireButtonListener());
+		controls.getFireButton().setOnTouchListener(new FireButtonListener()); //multitouch impossible because I can't split the motion events in the buttons.. Would be possible in 3.0 api using android:splitMotionEvents='true'
 		
 		frameRunnable = new FrameUpdate(gameBoard);
 		frame.postDelayed(frameRunnable.initiateGraphics(), 1000); //start graphics thread
@@ -100,8 +100,6 @@ public class GameActivity extends Activity {
 			return this;
 		}
 	}
-	
-	
 	
 	private class ControlThread implements Runnable{ //Thread to check if a button is pressed and held down
 		public void run() {

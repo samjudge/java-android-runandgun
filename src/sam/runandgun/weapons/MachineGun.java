@@ -10,18 +10,11 @@ public class MachineGun extends Weapon {
 
 	public MachineGun(Resources res) {
 		super(res);
-		this.setBulletImage(BitmapFactory.decodeResource(res, R.drawable.shot));
+		this.setBulletImage(BitmapFactory.decodeResource(res, R.drawable.shotmgun));
 	}
 
 	public List<Bullet> shoot(int originx, int originy, double originRotationDegrees, boolean friendly) {
-		Bullet bullet = new Bullet(3, originRotationDegrees, originx, originy, this.getBulletImage(), friendly); //NOTE: Setting friendly here because it's easy. plz change later
-		
-		//debug
-		
-		bullet.id = (int)(Math.random()*20000);
-		
-		//end debug
-		
+		Bullet bullet = new Bullet(3, originRotationDegrees, originx, originy, this.getBulletImage(), friendly);
 		List<Bullet> bullets = new ArrayList<Bullet>();
 		bullets.add(bullet);
 		return bullets;
