@@ -15,8 +15,10 @@ public class Enemy { //I may want to superclass some stuff in this and player...
 	private int destructionScoreValue;
 	private boolean canDraw;
 	private int chanceToFire;
+	private int speed;
 	
-	public Enemy(Bitmap enemyIcon, Weapon w, int x, int y, int score, int chanceToFire){
+	public Enemy(Bitmap enemyIcon, Weapon w, int x, int y, int score, int chanceToFire, int speed){
+		this.speed = speed;
 		destructionScoreValue = 25; //default
 		pos = new Point(x,y);
 		this.weapon = w;
@@ -53,7 +55,7 @@ public class Enemy { //I may want to superclass some stuff in this and player...
 	}
 	
 	public void move(int movement){
-		this.setYPos(this.pos.y + 2); //move down
+		this.setYPos(this.pos.y + speed); //move down
 		this.setXPos(this.getPos().x + movement); //move left/right
 	}
 	

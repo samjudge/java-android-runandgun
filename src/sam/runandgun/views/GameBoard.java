@@ -8,7 +8,9 @@ import sam.runandgun.enemies.Enemy;
 import sam.runandgun.gen.R;
 import sam.runandgun.player.Player;
 import sam.runandgun.weapons.Bullet;
+import sam.runandgun.weapons.LaserGun;
 import sam.runandgun.weapons.MachineGun;
+import sam.runandgun.weapons.MissileLauncher;
 import sam.runandgun.weapons.PhaserGun;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -74,6 +76,9 @@ public class GameBoard extends View{
 	//logic
 	
 	public void updateBoard(){
+		if (player.isAlive()){
+			player.setScore(player.getScore()+1);
+		}
 		this.generateStars();
 		this.generateEnemies();
 		this.moveEnemies();
@@ -138,11 +143,17 @@ public class GameBoard extends View{
 	}
 	
 	private void generateEnemies(){
-		int spawnSeed = (int)(Math.random()*1000);
-		if(spawnSeed > 995){
-			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemyphase), new PhaserGun(this.getResources()), (int)(Math.random()*350),-45, 50, 20));
-		} else if (spawnSeed > 985) {
-			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemymgun), new MachineGun(this.getResources()), (int)(Math.random()*350),-45, 25, 10));	
+		int spawnSeed = (int)(Math.random()*5000)+(player.getScore()/2500); //the addition will have to be removed at some point. For now it gives a false difficulty scaling device...
+		if (spawnSeed == 4999 || spawnSeed == 4998 || (player.getScore() != 0 && player.getScore()%15000 == 0)) {
+			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemygolden), new MachineGun(this.getResources()), (int)(Math.random()*350),-45, 5000, 0,6));
+		} else if (spawnSeed > 4990 && player.getScore() > 14000){
+			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemylaser), new LaserGun(this.getResources(), player), (int)(Math.random()*350),-45, 500, 850,1));
+		} else if(spawnSeed > 4980 && player.getScore() > 6000){
+			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemyseeker), new MissileLauncher(this.getResources(), player), (int)(Math.random()*350),-45, 250, 5,2));
+		} else if(spawnSeed > 4970 && player.getScore() > 9000){
+			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemyphase), new PhaserGun(this.getResources()), (int)(Math.random()*350),-45, 750, 25,3));
+		} else if (spawnSeed > 4940) {
+			enemies.add(new Enemy(BitmapFactory.decodeResource(this.getResources(), R.drawable.enemymgun), new MachineGun(this.getResources()), (int)(Math.random()*350),-45, 50, 15,2));	
 		}
 		
 		for(Enemy e : enemies){ //this generates random shots
@@ -181,6 +192,7 @@ public class GameBoard extends View{
 								this.player.setScore(player.getScore() + e.getDestructionScoreValue());
 								bulIterator.remove();
 								enemyIterator.remove();
+								if (e.getDestructionScoreValue() == 5000) player.setHealth(100);//temp, 5000 because it is saucer score
 								break;//again, needed?
 						}
 					}

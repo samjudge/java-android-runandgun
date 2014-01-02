@@ -16,8 +16,8 @@ public class PhaserGun extends Weapon{
 
 	@Override
 	public List<Bullet> shoot(int originx, int originy,	double originRotationDegrees, boolean friendly) {
-		Bullet bullet1 = new Bullet(4, originRotationDegrees+((Math.random()*50)-25), originx, originy, this.getBulletImage(), friendly); 
-		Bullet bullet2 = new Bullet(4, originRotationDegrees+((Math.random()*50)-25), originx, originy, this.getBulletImage(), friendly); 
+		Bullet bullet1 = new Bullet(10, 4, originRotationDegrees+((Math.random()*50)-25), originx, originy, 25, 25 ,this.getBulletImage(), friendly); 
+		Bullet bullet2 = new Bullet(10, 4, originRotationDegrees+((Math.random()*50)-25), originx, originy, 25, 25, this.getBulletImage(), friendly); 
 		List<Bullet> bullets = new ArrayList<Bullet>();
 		bullets.add(bullet1);
 		bullets.add(bullet2);

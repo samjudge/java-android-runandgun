@@ -14,7 +14,7 @@ public class MachineGun extends Weapon {
 	}
 
 	public List<Bullet> shoot(int originx, int originy, double originRotationDegrees, boolean friendly) {
-		Bullet bullet = new Bullet(3, originRotationDegrees, originx, originy, this.getBulletImage(), friendly);
+		Bullet bullet = new Bullet(20 ,3, originRotationDegrees, originx, originy, 25, 25, this.getBulletImage(), friendly);
 		List<Bullet> bullets = new ArrayList<Bullet>();
 		bullets.add(bullet);
 		return bullets;

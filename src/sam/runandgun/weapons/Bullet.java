@@ -10,14 +10,16 @@ public class Bullet implements canvasDrawable{ //Need to clean up this class
 	private double shotDirection;
 	private double shotSpeed;
 	private Point pos;
-	double xPos;
-	double yPos;
+	private double xPos;
+	private double yPos;
 	private Bitmap bulletImage;
 	private boolean isFriendly;
 	private int dmg;
+	private int height;
+	private int width;
 	
-	public Bullet(double shotSpeed, double shotDirection, int x, int y, Bitmap bImage, boolean isFriendly){
-		this.dmg = 20; //default
+	public Bullet(int dmg, double shotSpeed, double shotDirection, int x, int y, int w, int h, Bitmap bImage, boolean isFriendly){
+		this.dmg = dmg; //default
 		this.isFriendly = isFriendly;
 		this.shotSpeed = shotSpeed;
 		this.shotDirection = checkDirection(shotDirection);
@@ -26,6 +28,8 @@ public class Bullet implements canvasDrawable{ //Need to clean up this class
 		this.yPos = y;
 		this.pos.x = x;
 		this.pos.y = y;
+		this.width = w;
+		this.height = h;
 		this.bulletImage = bImage;
 	}
 	
@@ -66,6 +70,38 @@ public class Bullet implements canvasDrawable{ //Need to clean up this class
 
 	public int getDmg() {
 		return dmg;
+	}
+
+	public double getShotSpeed() {
+		return shotSpeed;
+	}
+
+	public void setShotSpeed(double shotSpeed) {
+		this.shotSpeed = shotSpeed;
+	}
+
+	public double getShotDirection() {
+		return shotDirection;
+	}
+
+	public void setShotDirection(double shotDirection) {
+		this.shotDirection = shotDirection;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
 	}
 	
 }

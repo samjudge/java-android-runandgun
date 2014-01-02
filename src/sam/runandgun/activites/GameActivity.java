@@ -88,7 +88,7 @@ public class GameActivity extends Activity {
 			score.setText(""+gameBoard.getPlayer().getScore());
 			
 			//update game
-			board.getPlayer().isDead();
+			board.getPlayer().isAlive();
 			board.updateBoard();
 			board.invalidate();
 			

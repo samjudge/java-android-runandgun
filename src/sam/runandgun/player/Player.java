@@ -37,10 +37,11 @@ public class Player implements canvasDrawable{
 		}
 	}
 	
-	public void isDead(){
+	public boolean isAlive(){
 		if (health <= 0){
 			alive = false;
 		}
+		return alive;
 	}
 	
 	public void drawToCanvas(Canvas c){
